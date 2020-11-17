@@ -2,7 +2,7 @@ import weRequest from '../src/index'
 
 weRequest.init({
     // [可选] 存在localStorage的session名称，且CGI请求的data中会自动带上以此为名称的session值；可不配置，默认为session
-    sessionName: "session",
+    sessionName: ["session"],
     // [可选] 请求URL的固定前缀；可不配置，默认为空
     urlPerfix: "https://www.example.com/",
     // [必填] 触发重新登录的条件，res为CGI返回的数据

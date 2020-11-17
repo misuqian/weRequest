@@ -1,2 +1,2 @@
-declare const _default: (session: string) => void;
+declare const _default: (session: string[]) => void;
 export default _default;

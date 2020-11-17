@@ -1,7 +1,7 @@
 /// <reference types="wx" />
 export interface IInitOption {
     codeToSession: ICodeToSessionOptions;
-    sessionName: string;
+    sessionName: string[];
     setHeader?: (() => IAnyObject) | object;
     urlPerfix?: string | (() => string);
     doNotCheckSession?: boolean;
@@ -78,6 +78,6 @@ export interface weRequest {
     getSession: () => string;
     getConfig: () => IGetConfigResult;
     login: (callback: Function) => void;
-    setSession: (x: string) => void;
+    setSession: (x: string[]) => void;
     version: string;
 }

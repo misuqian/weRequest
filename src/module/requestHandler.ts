@@ -69,7 +69,7 @@ function initializeRequestObj(obj: IRequestOption) {
     }
 
     if (obj.originUrl !== config.codeToSession.url && status.session) {
-        obj.data = { ...obj.data as object, [config.sessionName]: status.session };
+        obj.data = { ...obj.data as object, ...status.session };
     }
 
     // 如果有全局参数，则添加
@@ -82,7 +82,7 @@ function initializeRequestObj(obj: IRequestOption) {
     // 如果请求不是GET，则在URL中自动加上登录态和全局参数
     if (!config.doNotUseQueryString && obj.method !== "GET") {
         if (status.session) {
-            obj.url = url.setParams(obj.url, { [config.sessionName]: status.session });
+            obj.url = url.setParams(obj.url, { ...status.session });
         }
         obj.url = url.setParams(obj.url, gd);
     }
@@ -109,7 +109,7 @@ function initializeUploadFileObj(obj: IUploadFileOption) {
     }
 
     if (obj.originUrl !== config.codeToSession.url && status.session) {
-        obj.formData = { ...obj.formData as object, [config.sessionName]: status.session };
+        obj.formData = { ...obj.formData as object, ...status.session };
     }
 
     // 如果有全局参数，则添加
@@ -119,7 +119,7 @@ function initializeUploadFileObj(obj: IUploadFileOption) {
     if (!config.doNotUseQueryString) {
         // 将登陆态也带在url上
         if (status.session) {
-            obj.url = url.setParams(obj.url, { [config.sessionName]: status.session });
+            obj.url = url.setParams(obj.url, { ...status.session });
         }
         // 全局参数同时放在url上
         obj.url = url.setParams(obj.url, gd);

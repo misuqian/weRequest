@@ -150,7 +150,7 @@ weRequest.request({
 
 |参数名|类型|必填|默认值|说明|
 | :-------- | :-------| :------ | :------ |:------ |
-|sessionName|String|否|session|储存在localStorage的session名称，且CGI请求的data中会自动带上以此为名称的session值；可不配置，默认为session|
+|sessionName|String[]|否|session|储存在localStorage的session名称，且CGI请求的data中会自动带上以此为名称的session值；可不配置，默认为session|
 |urlPerfix|String or Function|否||请求URL的固定前缀，如果配置了，后续请求的URL都会自动加上这个前缀，如果是函数，则为函数的返回值|
 |loginTrigger|Function|是||触发重新登录的条件；参数为CGI返回的数据，返回需要重新登录的条件|
 |codeToSession|Object|是||用code换取session的CGI配置|
@@ -193,7 +193,7 @@ weRequest.request({
 ```javascript
 weRequest.init({
     // [可选] 存在localStorage的session名称，且CGI请求的data中会自动带上以此为名称的session值；可不配置，默认为session
-    sessionName: "session",
+    sessionName: ["session"],
     // [可选] 请求URL的固定前缀；可不配置，默认为空
     urlPerfix: "https://www.example.com/",
     // [必填] 触发重新登录的条件，res为CGI返回的数据
@@ -214,7 +214,7 @@ weRequest.init({
         // [必填] CGI中返回的session值
         success: function (res) {
             // 此处例子：CGI返回数据中的字段session即为session值
-            return res.session;
+            return [res.session];
         }
     },
     // [可选] 登录重试次数，当连续请求登录接口返回失败次数超过这个次数，将不再重试登录；可不配置，默认为重试3次

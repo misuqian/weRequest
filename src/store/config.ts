@@ -1,7 +1,7 @@
 import { IInitOption } from '../interface'
 
 const defaultConfig: IInitOption = {
-    sessionName: "session",
+    sessionName: ["session"],
     loginTrigger() {
         return false
     },

@@ -116,8 +116,7 @@ function login() {
     })
 }
 
-function setSession(session: string) {
-    status.session = session;
+function setSession(session: string[]) {
     // 换回来的session，不需要再checkSession
     config.doNotCheckSession = true;
     // 如果有设置本地session过期时间
@@ -128,10 +127,15 @@ function setSession(session: string) {
             data: String(status.sessionExpire)
         })
     }
-    wx.setStorage({
-        key: config.sessionName as string,
-        data: status.session
-    });
+    let data : any = {};
+    for (let index = 0; index < session.length; index++) {
+      wx.setStorage({
+        key: config.sessionName[index],
+        data: session[index],
+      });
+      data[config.sessionName[index]] = session[index];
+    }
+    status.session = Object.assign(status.session || {}, data);
 }
 
 function code2Session(code: string) {
@@ -163,28 +167,14 @@ function code2Session(code: string) {
                         durationReporter.report(config.codeToSession.report, start, end)
                     }
 
-                    let s = "";
+                    let s = [];
                     try {
                         s = config.codeToSession.success(res.data);
                     } catch (e) {
                     }
 
                     if (s) {
-                        status.session = s;
-                        // 换回来的session，不需要再checkSession
-                        config.doNotCheckSession = true;
-                        // 如果有设置本地session过期时间
-                        if (config.sessionExpireTime && config.sessionExpireKey) {
-                            status.sessionExpire = new Date().getTime() + config.sessionExpireTime;
-                            wx.setStorage({
-                                key: config.sessionExpireKey,
-                                data: String(status.sessionExpire)
-                            })
-                        }
-                        wx.setStorage({
-                            key: config.sessionName,
-                            data: status.session
-                        });
+                        setSession(s);
                         return resolve();
                     } else {
                         return reject(errorHandler.getErrorMsg(res));
@@ -204,10 +194,12 @@ function code2Session(code: string) {
 
 /* 清空session */
 function delSession() {
-    status.session = '';
-    wx.removeStorage({
-        key: config.sessionName as string
-    });
+    status.session = undefined;
+    for (const key of config.sessionName!) {
+      wx.removeStorage({
+        key: key
+      });
+    }
     if (config.sessionExpireTime && config.sessionExpireKey) {
         status.sessionExpire = Infinity;
         wx.removeStorage({
