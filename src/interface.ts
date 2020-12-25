@@ -73,6 +73,8 @@ export interface ICodeToSessionOptions{
 }
 
 export interface IRequestOption extends IRequestObject {
+    /* data数据动态加载函数 */
+    dataLoad: Function;
     /* 发起请求前执行的函数 */
     beforeSend?: Function;
     /* 请求过程页面是否展示全屏的loading */
@@ -109,6 +111,8 @@ export interface IRequestObject extends wx.RequestOption{
 }
 
 export interface IUploadFileOption extends IUploadFileObject {
+    /* data数据动态加载函数 */
+    dataLoad: Function;
     /* 发起请求前执行的函数 */
     beforeSend?: Function;
     /* 请求过程页面是否展示全屏的loading */

@@ -30,6 +30,7 @@ export interface ICodeToSessionOptions {
     report?: string;
 }
 export interface IRequestOption extends IRequestObject {
+    dataLoad: Function;
     beforeSend?: Function;
     showLoading?: boolean | string;
     report?: string;
@@ -49,6 +50,7 @@ export interface IRequestObject extends wx.RequestOption {
     _reject?: (reason?: any) => void;
 }
 export interface IUploadFileOption extends IUploadFileObject {
+    dataLoad: Function;
     beforeSend?: Function;
     showLoading?: boolean | string;
     report?: string;

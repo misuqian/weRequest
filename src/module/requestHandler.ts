@@ -57,6 +57,10 @@ function initializeRequestObj(obj: IRequestOption) {
     if (!obj.data) {
         obj.data = {};
     }
+
+    if (obj.dataLoad && typeof obj.dataLoad === 'function') {
+      obj.data = obj.dataLoad(obj.data);
+    }
     
     obj.header = obj.header ? obj.header : {};
     if (typeof config.setHeader === 'function') {
@@ -96,6 +100,10 @@ function initializeRequestObj(obj: IRequestOption) {
 function initializeUploadFileObj(obj: IUploadFileOption) {
     if (!obj.formData) {
         obj.formData = {};
+    }
+
+    if (obj.dataLoad && typeof obj.dataLoad === 'function') {
+      obj.formData = obj.dataLoad(obj.formData);
     }
 
     obj.header = obj.header ? obj.header : {};

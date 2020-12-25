@@ -7,7 +7,10 @@ export default (params: IInitOption) => {
     try {
         let data : any = {};
         for (const key of config.sessionName!) {
-          data[key] = wx.getStorageSync(key) || '';
+          let value = wx.getStorageSync(key) || '';
+          if (value) {
+            data[key] = value;
+          }
         }
         status.session = data;
     } catch (e) {
