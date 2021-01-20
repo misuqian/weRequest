@@ -2,7 +2,9 @@ import weRequest from '../src/index'
 
 weRequest.init({
     // [可选] 存在localStorage的session名称，且CGI请求的data中会自动带上以此为名称的session值；可不配置，默认为session
-    sessionName: ["session"],
+    sessionName: {
+      session: 'session',
+    },
     // [可选] 请求URL的固定前缀；可不配置，默认为空
     urlPerfix: "https://www.example.com/",
     // [必填] 触发重新登录的条件，res为CGI返回的数据
@@ -23,7 +25,9 @@ weRequest.init({
         // [必填] CGI中返回的session值
         success: function (res) {
             // 此处例子：CGI返回数据中的字段session即为session值
-            return res.session;
+            return {
+              session: res.session
+            };
         },
         // [可选] 接口失败的回调，可不配置，默认为弹窗报错
         fail: function(obj, res) {

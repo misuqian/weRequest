@@ -150,7 +150,7 @@ weRequest.request({
 
 |参数名|类型|必填|默认值|说明|
 | :-------- | :-------| :------ | :------ |:------ |
-|sessionName|String[]|否|session|储存在localStorage的session名称，且CGI请求的data中会自动带上以此为名称的session值；可不配置，默认为session|
+|sessionName|Object|否|{session: 'session'}|value储存在localStorage的session名称，key为CGI请求的data中会自动带上的值.|
 |urlPerfix|String or Function|否||请求URL的固定前缀，如果配置了，后续请求的URL都会自动加上这个前缀，如果是函数，则为函数的返回值|
 |loginTrigger|Function|是||触发重新登录的条件；参数为CGI返回的数据，返回需要重新登录的条件|
 |codeToSession|Object|是||用code换取session的CGI配置|
@@ -193,7 +193,9 @@ weRequest.request({
 ```javascript
 weRequest.init({
     // [可选] 存在localStorage的session名称，且CGI请求的data中会自动带上以此为名称的session值；可不配置，默认为session
-    sessionName: ["session"],
+    sessionName: {
+      session: 'session',
+    },
     // [可选] 请求URL的固定前缀；可不配置，默认为空
     urlPerfix: "https://www.example.com/",
     // [必填] 触发重新登录的条件，res为CGI返回的数据

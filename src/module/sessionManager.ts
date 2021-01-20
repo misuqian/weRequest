@@ -116,7 +116,7 @@ function login() {
     })
 }
 
-function setSession(session: string[]) {
+function setSession(session: any) {
     // 换回来的session，不需要再checkSession
     config.doNotCheckSession = true;
     // 如果有设置本地session过期时间
@@ -128,12 +128,12 @@ function setSession(session: string[]) {
         })
     }
     let data : any = {};
-    for (let index = 0; index < session.length; index++) {
+    for (const key in session) {
       wx.setStorage({
-        key: config.sessionName[index],
-        data: session[index],
+        key: config.sessionName[key],
+        data: session[key],
       });
-      data[config.sessionName[index]] = session[index];
+      data[key] = session[key];
     }
     status.session = Object.assign(status.session || {}, data);
 }

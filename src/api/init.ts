@@ -6,8 +6,9 @@ export default (params: IInitOption) => {
     Object.assign(config, params);
     try {
         let data : any = {};
-        for (const key of config.sessionName!) {
-          let value = wx.getStorageSync(key) || '';
+        for (const key in config.sessionName!) {
+          const storageKey = config.sessionName![key];
+          let value = wx.getStorageSync(storageKey) || '';
           if (value) {
             data[key] = value;
           }
