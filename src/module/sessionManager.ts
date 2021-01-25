@@ -6,7 +6,6 @@ import requestHandler from './requestHandler'
 import loading from '../util/loading'
 import request from '../api/request'
 import { IRequestOption, IUploadFileOption } from "../interface";
-import taskManager from './taskManager'
 
 /* 生命周期内只做一次的checkSession */
 let checkSessionPromise: any = null;
@@ -24,8 +23,8 @@ function checkSession() {
                 fail() {
                     // 登录态过期
                     delSession();
-                    return doLogin().then(() => {
-                        return resolve();
+                    return doLogin().then((res: any) => {
+                        return resolve(res);
                     }, (res: any)=>{
                         return reject(res);
                     });
@@ -80,8 +79,8 @@ function checkLogin() {
         if (isSessionExpireOrEmpty()) {
             // 没有登陆态，不需要再checkSession
             config.doNotCheckSession = true;
-            return doLogin().then(() => {
-                return resolve();
+            return doLogin().then((res: any) => {
+                return resolve(res);
             }, (res: any)=>{
                 return reject(res);
             })
@@ -100,9 +99,9 @@ function doLogin() {
         loginPromise = new Promise((resolve, reject) => {
             login().then(() => {
                 loginPromise = null;
-                // 登录成功后重试之前等待登录态的请求
-                taskManager.redoSessionTask();
-                return resolve();
+                return resolve({
+                  redoSessionTask: true,
+                });
             }).catch((res) => {
                 loginPromise = null;
                 loading.hide();
@@ -239,13 +238,13 @@ function main(relatedRequestObj?: IRequestOption | IUploadFileOption) {
             ? () => main().then(resolve).catch(reject)
             // 如果有关联的请求，重试即调用所关联的请求
             : () => request(relatedRequestObj).then(relatedRequestObj._resolve).catch(relatedRequestObj._reject);
-        return checkLogin().then(() => {
-            return config.doNotCheckSession ? Promise.resolve() : checkSession()
+        return checkLogin().then((res) => {
+            return config.doNotCheckSession ? Promise.resolve(res) : checkSession()
         }, ({title, content}) => {
             errorHandler.doError(title, content, retry);
             return reject({title, content});
-        }).then(() => {
-            return resolve();
+        }).then((res) => {
+            return resolve(res);
         }, ({title, content})=> {
             errorHandler.doError(title, content, retry);
             return reject({title, content});

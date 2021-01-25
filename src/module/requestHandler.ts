@@ -230,8 +230,13 @@ function request(obj: IRequestOption): any {
             cacheManager.get(obj);
         }
 
-        sessionManager.main(obj).then(() => {
-            return doRequest(obj)
+        sessionManager.main(obj).then((res: any) => {
+          const promise = doRequest(obj);
+          if (res && res.redoSessionTask) {
+            // 登录成功后重试之前等待登录态的请求
+            taskManager.redoSessionTask();
+          }
+          return promise;
         }).then((res) => {
             let response = responseHandler.responseForRequest(res as wx.RequestSuccessCallbackResult, obj);
             if (response != null) {
