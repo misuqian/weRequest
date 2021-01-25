@@ -10,6 +10,9 @@ import url from '../util/url'
 import { IRequestOption, IUploadFileOption } from "../interface"
 import errorHandler from "./errorHandler";
 import { catchHandler } from './catchHandler';
+import taskManager from './taskManager'
+
+let requestTag = 0;
 
 // 格式化url
 function format(originUrl: string) {
@@ -47,6 +50,13 @@ function preDo<T extends IRequestOption | IUploadFileOption>(obj: T, resolve: (v
 
     obj._resolve = resolve;
     obj._reject = reject;
+    obj.tag = requestTag++;
+    if (typeof obj.notNeedSession === "undefined") {
+      obj.notNeedSession = false;
+    }
+    if (typeof obj.aborted === "undefined") {
+      obj.aborted = false;
+    }
 
     return obj;
 }
@@ -151,7 +161,7 @@ function getGlobalData() {
 function doRequest(obj: IRequestOption) {
     obj = initializeRequestObj(obj);
     return new Promise((resolve, reject) => {
-        wx.request({
+        const requestTask = wx.request({
             url: obj.url,
             data: obj.data,
             method: obj.method,
@@ -172,7 +182,8 @@ function doRequest(obj: IRequestOption) {
                     loading.hide()
                 }
             }
-        })
+        });
+        taskManager.addSessionTask(requestTask, obj);
     })
 }
 

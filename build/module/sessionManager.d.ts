@@ -1,5 +1,5 @@
 import { IRequestOption, IUploadFileOption } from "../interface";
-declare function setSession(session: string[]): void;
+declare function setSession(session: any): void;
 declare function delSession(): void;
 declare function main(relatedRequestObj?: IRequestOption | IUploadFileOption): Promise<unknown>;
 declare const _default: {

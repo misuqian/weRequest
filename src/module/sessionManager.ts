@@ -6,6 +6,7 @@ import requestHandler from './requestHandler'
 import loading from '../util/loading'
 import request from '../api/request'
 import { IRequestOption, IUploadFileOption } from "../interface";
+import taskManager from './taskManager'
 
 /* 生命周期内只做一次的checkSession */
 let checkSessionPromise: any = null;
@@ -50,6 +51,27 @@ function isSessionExpireOrEmpty() {
         delSession();
         return true
     }
+    if (config.sessionName) {
+      let statusEmpty = false;
+      for (const key in config.sessionName!) {
+        if (!status.session[key]) {
+          statusEmpty = true;
+          break;
+        }
+      }
+
+      if (statusEmpty) {
+        for (const key in config.sessionName!) {
+          const stgKey = config.sessionName![key];
+          const statusValue = wx.getStorageSync(stgKey);
+          if (!statusValue) {
+            return true;
+          } else {
+            status.session[key] = statusValue;
+          }
+        }
+      }
+    }
     return false
 }
 
@@ -78,6 +100,8 @@ function doLogin() {
         loginPromise = new Promise((resolve, reject) => {
             login().then(() => {
                 loginPromise = null;
+                // 登录成功后重试之前等待登录态的请求
+                taskManager.redoSessionTask();
                 return resolve();
             }).catch((res) => {
                 loginPromise = null;
@@ -195,9 +219,9 @@ function code2Session(code: string) {
 /* 清空session */
 function delSession() {
     status.session = undefined;
-    for (const key of config.sessionName!) {
+    for (const key in config.sessionName!) {
       wx.removeStorage({
-        key: key
+        key: config.sessionName![key]
       });
     }
     if (config.sessionExpireTime && config.sessionExpireKey) {

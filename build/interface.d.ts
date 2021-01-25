@@ -1,7 +1,7 @@
 /// <reference types="wx" />
 export interface IInitOption {
     codeToSession: ICodeToSessionOptions;
-    sessionName: string[];
+    sessionName: any;
     setHeader?: (() => IAnyObject) | object;
     urlPerfix?: string | (() => string);
     doNotCheckSession?: boolean;
@@ -42,6 +42,9 @@ export interface IRequestOption extends IRequestObject {
     catchError?: boolean;
 }
 export interface IRequestObject extends wx.RequestOption {
+    tag: Number;
+    notNeedSession: boolean;
+    aborted: boolean;
     originUrl?: string;
     reLoginCount?: number;
     _reportStartTime?: number;
@@ -60,6 +63,9 @@ export interface IUploadFileOption extends IUploadFileObject {
     catchError?: boolean;
 }
 export interface IUploadFileObject extends wx.UploadFileOption {
+    tag: Number;
+    notNeedSession: boolean;
+    aborted: boolean;
     originUrl?: string;
     reLoginCount?: number;
     _reportStartTime?: number;

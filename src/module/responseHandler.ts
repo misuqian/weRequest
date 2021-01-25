@@ -6,6 +6,7 @@ import durationReporter from './durationReporter'
 import sessionManager from './sessionManager'
 import { IRequestOption, IUploadFileOption } from "../interface";
 import jsonSuperset from '../util/jsonSuperset'
+import taskManager from './taskManager'
 
 function responseForRequest(
     res: wx.RequestSuccessCallbackResult,
@@ -14,6 +15,11 @@ function responseForRequest(
     if (res.statusCode === 200) {
 
         durationReporter.end(obj);
+
+        if (obj.aborted) {
+          // 接口被强制终止了
+          return;
+        }
 
         // 请求格式为json，但返回了string，说明内容中可能存在导致使得JavaScript异常的字符
         if (obj.dataType === 'json' && typeof res.data === 'string') {
@@ -30,9 +36,14 @@ function responseForRequest(
             }
         }
 
+        taskManager.delSessionTask(obj.tag);
+
         if (config.loginTrigger!(res.data) && obj.reLoginCount !== undefined && obj.reLoginCount < config.reLoginLimit!) {
             // 登录态失效，且重试次数不超过配置
             sessionManager.delSession();
+            // 强制关闭正在请求的其他接口
+            taskManager.abortSessionTask();
+            // 取消其他登录态依赖接口
             return requestHandler.request(obj);
         } else if (config.successTrigger(res.data)) {
             // 接口返回成功码

@@ -96,6 +96,12 @@ export interface IRequestOption extends IRequestObject {
 }
 
 export interface IRequestObject extends wx.RequestOption{
+    /* 请求标记 */
+    tag: Number,
+    /* 请求接口不依赖登录态 */
+    notNeedSession: boolean;
+    /* 请求接口是否被强制终止 */
+    aborted: boolean;
     /* 业务请求的原始url */
     originUrl?: string;
     /* 重登陆次数 */
@@ -130,6 +136,12 @@ export interface IUploadFileOption extends IUploadFileObject {
 }
 
 export interface IUploadFileObject extends wx.UploadFileOption {
+    /* 请求标记 */
+    tag: Number,
+    /* 请求接口不依赖登录态 */
+    notNeedSession: boolean;
+    /* 请求接口是否被强制终止 */
+    aborted: boolean;
     /* 业务请求的原始url */
     originUrl?: string;
     /* 重登陆次数 */
