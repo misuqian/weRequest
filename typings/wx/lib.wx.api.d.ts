@@ -3796,6 +3796,9 @@ declare namespace wx {
      *
      * 最低基础库： `1.2.0` */
     header: IAnyObject;
+
+    profile: any;
+    cookies: Array<String>,
   }
   interface OpenSettingSuccessCallbackResult {
     /** [AuthSetting]((AuthSetting))

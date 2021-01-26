@@ -37,7 +37,7 @@ export interface IInitOption {
     /* 触发请求成功的条件；参数为CGI返回的数据，返回接口逻辑成功的条件 */
     successTrigger: (res: string | IAnyObject | ArrayBuffer) => boolean;
     /* 成功之后返回数据；参数为CGI返回的数据，返回逻辑需要使用的数据 */
-    successData?: (res: string | IAnyObject | ArrayBuffer) => string | IAnyObject | ArrayBuffer;
+    successData?: (resData: string | IAnyObject | ArrayBuffer, res?: wx.RequestSuccessCallbackResult | wx.UploadFileSuccessCallbackResult) => string | IAnyObject | ArrayBuffer;
     /* 	接口逻辑失败时，错误弹窗的标题 */
     errorTitle?: string | ((res: string | IAnyObject | ArrayBuffer) => string);
     /* 接口逻辑失败时，错误弹窗的内容 */
@@ -86,7 +86,7 @@ export interface IRequestOption extends IRequestObject {
     /* 当启用缓存时，决定除了返回缓存内容外，是否还返回接口实时内容，以防止页面多次渲染的抖动 */
     noCacheFlash?: boolean;
     /* 接口调用成功的回调函数 */
-    success?: (res: string | IAnyObject | ArrayBuffer, cacheInfo?: object) => void;
+    success?: (resData: string | IAnyObject | ArrayBuffer, cacheInfo?: object, res?: any) => void;
     /* 接口调用结束的回调函数（调用成功、失败都会执行） */
     complete?: ()=> void;
     /** 接口调用失败 或 逻辑失败 的回调函数 */
@@ -126,7 +126,7 @@ export interface IUploadFileOption extends IUploadFileObject {
     /* 接口请求成功后将自动执行init()中配置的reportCGI函数，其中的name字段值为这里配置的值 */
     report?: string;
     /* 接口调用成功的回调函数 */
-    success?: (res: string | IAnyObject | ArrayBuffer, cacheInfo?: object) => void;
+    success?: (resData: string | IAnyObject | ArrayBuffer, cacheInfo?: object, res?: any) => void;
     /* 接口调用结束的回调函数（调用成功、失败都会执行） */
     complete?: ()=> void;
     /** 接口调用失败 或 逻辑失败 的回调函数 */

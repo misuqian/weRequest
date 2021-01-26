@@ -14,7 +14,7 @@ export interface IInitOption {
     sessionExpireTime?: number;
     loginTrigger?: (res: string | IAnyObject | ArrayBuffer) => boolean;
     successTrigger: (res: string | IAnyObject | ArrayBuffer) => boolean;
-    successData?: (res: string | IAnyObject | ArrayBuffer) => string | IAnyObject | ArrayBuffer;
+    successData?: (resData: string | IAnyObject | ArrayBuffer, res?: wx.RequestSuccessCallbackResult | wx.UploadFileSuccessCallbackResult) => string | IAnyObject | ArrayBuffer;
     errorTitle?: string | ((res: string | IAnyObject | ArrayBuffer) => string);
     errorContent?: string | ((res: string | IAnyObject | ArrayBuffer) => string);
     errorRetryBtn?: boolean;
@@ -36,7 +36,7 @@ export interface IRequestOption extends IRequestObject {
     report?: string;
     cache?: boolean | ((res: string | IAnyObject | ArrayBuffer) => boolean);
     noCacheFlash?: boolean;
-    success?: (res: string | IAnyObject | ArrayBuffer, cacheInfo?: object) => void;
+    success?: (resData: string | IAnyObject | ArrayBuffer, cacheInfo?: object, res?: any) => void;
     complete?: () => void;
     fail?: (res: string | IAnyObject | ArrayBuffer) => void;
     catchError?: boolean;
@@ -57,7 +57,7 @@ export interface IUploadFileOption extends IUploadFileObject {
     beforeSend?: Function;
     showLoading?: boolean | string;
     report?: string;
-    success?: (res: string | IAnyObject | ArrayBuffer, cacheInfo?: object) => void;
+    success?: (resData: string | IAnyObject | ArrayBuffer, cacheInfo?: object, res?: any) => void;
     complete?: () => void;
     fail?: (res: string | IAnyObject | ArrayBuffer) => void;
     catchError?: boolean;

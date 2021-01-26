@@ -50,7 +50,7 @@ function responseForRequest(
             let realData: string | IAnyObject | ArrayBuffer = "";
             try {
                 if (typeof config.successData === 'function') {
-                    realData = config.successData(res.data);
+                    realData = config.successData(res.data, res);
                 } else {
                     realData = res.data;
                 }
@@ -60,7 +60,7 @@ function responseForRequest(
             if (!obj.noCacheFlash) {
                 // 如果为了保证页面不闪烁，则不回调，只是缓存最新数据，待下次进入再用
                 if (typeof obj.success === "function") {
-                    obj.success(realData);
+                    obj.success(realData, {}, res);
                 } else {
                     return realData;
                 }
@@ -109,7 +109,7 @@ function responseForUploadFile(
             let realData: string | IAnyObject | ArrayBuffer = "";
             try {
                 if (typeof config.successData === 'function') {
-                    realData = config.successData(res.data);
+                    realData = config.successData(res.data, res);
                 } else {
                     realData = res.data;
                 }
@@ -118,7 +118,7 @@ function responseForUploadFile(
             }
 
             if (typeof obj.success === "function") {
-                obj.success(realData);
+                obj.success(realData, {}, res);
             } else {
                 return realData;
             }
