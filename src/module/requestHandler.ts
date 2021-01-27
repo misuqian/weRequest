@@ -171,6 +171,9 @@ function doRequest(obj: IRequestOption) {
                 return resolve(res);
             },
             fail(res: wx.GeneralCallbackResult) {
+                if (res && res.errMsg == 'request:fail abort') {
+                  return;
+                }
                 errorHandler.systemError(obj, res);
                 return reject(res);
             },

@@ -31,6 +31,7 @@ function redoSessionTask() {
   if (!waitRedoTask) return;
   if (waitRedoTask.length === 0) return;
   for (const taskObj of waitRedoTask) {
+    taskObj.aborted = false;
     requestHandler.request(taskObj);
   }
   waitRedoTask = [];

@@ -8,6 +8,9 @@ interface ThrowError {
 }
 function catchHandler(e: ThrowError, obj: IRequestOption | IUploadFileOption, reject: (reason?: any) => void) {
     const { type, res } = e
+    if (obj.aborted) {
+      return;
+    }
     if (obj.catchError) {
         if (type === 'http-error') {
             return reject(new Error(res.statusCode.toString()));
