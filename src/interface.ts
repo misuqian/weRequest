@@ -70,6 +70,12 @@ export interface ICodeToSessionOptions{
     fail?: Function;
     /* codeToSession的上报字段名 */
     report?: string;
+    /** 开启http2, 2.10.4支持 */
+    enableHttp2?: boolean;
+    /** 开启quic, 2.10.4支持 */
+    enableQuic?: boolean;
+    /** 开启cache, 2.10.4支持 */
+    enableCache?: boolean;
 }
 
 export interface IRequestOption extends IRequestObject {

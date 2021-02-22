@@ -182,6 +182,9 @@ function code2Session(code: string) {
             data,
             method: config.codeToSession.method || 'GET',
             header: typeof config.setHeader === 'function' ? config.setHeader(): config.setHeader,
+            enableHttp2: config.codeToSession.enableHttp2 || false,
+            enableQuic: config.codeToSession.enableQuic || false,
+            enableCache: config.codeToSession.enableCache || false,
             success(res: wx.RequestSuccessCallbackResult) {
                 if (res.statusCode === 200) {
                     // 耗时上报

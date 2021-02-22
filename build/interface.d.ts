@@ -28,6 +28,9 @@ export interface ICodeToSessionOptions {
     success: Function;
     fail?: Function;
     report?: string;
+    enableHttp2?: boolean;
+    enableQuic?: boolean;
+    enableCache?: boolean;
 }
 export interface IRequestOption extends IRequestObject {
     dataLoad: Function;

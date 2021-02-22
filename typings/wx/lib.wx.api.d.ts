@@ -1555,6 +1555,12 @@ declare namespace wx {
     fail?: RequestFailCallback;
     /** 接口调用结束的回调函数（调用成功、失败都会执行） */
     complete?: RequestCompleteCallback;
+    /** 开启http2, 2.10.4支持 */
+    enableHttp2?: boolean;
+    /** 开启quic, 2.10.4支持 */
+    enableQuic?: boolean;
+    /** 开启cache, 2.10.4支持 */
+    enableCache?: boolean;
   }
   interface OpenSettingOption {
     /** 接口调用成功的回调函数 */

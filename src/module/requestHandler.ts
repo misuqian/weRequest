@@ -167,6 +167,9 @@ function doRequest(obj: IRequestOption) {
             method: obj.method,
             header: obj.header || {},
             dataType: obj.dataType || 'json',
+            enableHttp2: obj.enableHttp2 || false,
+            enableQuic: obj.enableQuic || false,
+            enableCache: obj.enableCache || false,
             success(res: wx.RequestSuccessCallbackResult) {
                 return resolve(res);
             },
